@@ -11,29 +11,20 @@
  * Text Domain: last-modified-blog-posts
  */
 
-
-
 // If this file is called directly, abort.
-if (!defined('WPINC')) {
+if (!defined('ABSPATH')) {
     die;
 }
+
 // Load plugin text domain for localization.
 add_action('plugins_loaded', 'last_modified_blog_posts_load_textdomain');
 function last_modified_blog_posts_load_textdomain() {
-    load_plugin_textdomain( 'last-modified-blog-posts', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+    load_plugin_textdomain('last-modified-blog-posts', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
 
-// Include the main plugin class.
+// Include the main plugin code directly.
 require_once plugin_dir_path(__FILE__) . 'includes/class-last-modified-blog-posts.php';
 
-// Instantiate the plugin class.
-add_action('plugins_loaded', 'last_modified_blog_posts_init');
-function last_modified_blog_posts_init() {
-    new Last_Modified_Blog_Posts();
-}
-
-
-
-
-
+// Instantiate the plugin directly.
+new Last_Modified_Blog_Posts();
 

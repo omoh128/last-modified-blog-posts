@@ -28,37 +28,22 @@ if (!class_exists('Last_Modified_Blog_Posts')) {
                 'post_status'    => 'publish',
             );
 
-            $query = new WP_Query($args);
+            $posts = get_posts($args);
 
             $post_titles = array();
-            if ($query->have_posts()) {
-                while ($query->have_posts()) {
-                    $query->the_post();
-                    $post_id = get_the_ID();
-                    // Discard posts with even IDs
-                    if ($post_id % 2 !== 0) {
-                        $post_titles[] = get_the_title();
-                    }
+            if (!empty($posts)) {
+                foreach ($posts as $post) {
+                    $post_titles[] = esc_html($post->post_title);
                 }
-                wp_reset_postdata();
-
-            
-            
-            
+                
                 // Generate admin notice
-                if (!empty($post_titles)) {
-                    $notice_content = '<strong>Last Modified and Published Blog Post Titles</strong>';
-                    $notice_content .= '<ul>';
-                    foreach ($post_titles as $title) {
-                        $notice_content .= '<li>' . esc_html($title) . '</li>';
-                    }
-                    $notice_content .= '</ul>';
-                    echo '<div class="notice notice-info is-dismissible"><p>' . $notice_content . '</p></div>';
-                
-                
-                
-                
+                $notice_content = '<strong>' . __('Last Modified and Published Blog Post Titles', 'last-modified-blog-posts') . '</strong>';
+                $notice_content .= '<ul>';
+                foreach ($post_titles as $title) {
+                    $notice_content .= '<li>' . $title . '</li>';
                 }
+                $notice_content .= '</ul>';
+                echo '<div class="notice notice-info is-dismissible"><p>' . $notice_content . '</p></div>';
             }
         }
     }
